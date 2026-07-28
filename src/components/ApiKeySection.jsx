@@ -50,14 +50,25 @@ export function ApiKeySection({ apiKey, setApiKey }) {
         </div>
       )}
 
-      {/* Guía explicativa */}
+      {/* Guía explicativa con el LINK directo */}
       {showGuide && provider === 'gemini' && (
         <div className="guide-card">
           <p style={{ margin: '0 0 6px 0', fontWeight: 'bold' }}>
             Es 100% gratuita y sin datos de pago:
           </p>
           <ol>
-            <li>Entra a Google AI Studio con tu cuenta de Google.</li>
+            <li>
+              Entra a{' '}
+              <a 
+                href="https://aistudio.google.com/app/apikey" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{ color: '#60a5fa', fontWeight: 'bold', textDecoration: 'underline' }}
+              >
+                Google AI Studio ↗
+              </a>{' '}
+              con tu cuenta de Google.
+            </li>
             <li>Haz clic en <strong>"Create API Key"</strong>.</li>
             <li>Copia el código y pégalo en el campo de arriba.</li>
           </ol>
