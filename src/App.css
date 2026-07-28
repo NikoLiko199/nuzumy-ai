@@ -1,27 +1,88 @@
+body {
+  background-image: url('/Nuzumy-Wallpaper.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* CONTENEDOR PRINCIPAL */
 .app-main-container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 650px;
+  width: 90%;
+  margin: 20px auto;
   text-align: center;
 }
 
+/* LOGO */
+.header-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.nuzumy-logo {
+  max-width: 260px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.35));
+}
+
+/* SECCION API / SELECCIÓN DE MODELO */
 .api-key-container {
-  max-width: 600px;
-  margin: 0 auto 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.provider-selector {
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.provider-selector select {
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
 }
 
 .input-wrapper {
   display: flex;
   gap: 8px;
+  width: 100%;
+  max-width: 500px;
 }
 
 .api-key-input {
   flex: 1;
-  padding: 10px 12px;
+  padding: 10px 14px;
   border-radius: 6px;
   border: 1px solid #333;
   background-color: #1a1a1a;
   color: #fff;
+  outline: none;
 }
 
 .toggle-visibility-btn {
@@ -38,30 +99,38 @@
 }
 
 .help-label {
-  font-size: 0.875rem;
-  color: #888;
-  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: inline-block;
 }
 
 .guide-link {
-  color: #3b82f6;
+  color: #60a5fa;
   cursor: pointer;
   text-decoration: underline;
   font-weight: bold;
+  margin-left: 4px;
 }
 
 .guide-link:hover {
-  color: #60a5fa;
+  color: #93c5fd;
 }
 
 .guide-card {
-  margin-top: 12px;
-  padding: 16px;
-  background-color: #121212;
-  border: 1px solid #2d3748;
+  margin-top: 8px;
+  padding: 14px 18px;
+  background-color: rgba(18, 18, 18, 0.95);
+  border: 1px solid #3f3f46;
   border-radius: 8px;
   text-align: left;
   color: #e0e0e0;
+  max-width: 480px;
+  font-size: 0.85rem;
 }
 
 .guide-card ol {
@@ -69,16 +138,13 @@
   padding: 0;
 }
 
-.guide-card a {
-  color: #60a5fa;
-}
-
-/* Chat styles */
+/* CAJA DE CHAT */
 .chat-box {
-  background-color: #141414;
-  border: 1px solid #2a2a2a;
-  border-radius: 8px;
-  height: 350px;
+  background-color: rgba(18, 18, 18, 0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  height: 360px;
   overflow-y: auto;
   padding: 16px;
   display: flex;
@@ -111,7 +177,7 @@
 }
 
 .loading-text {
-  color: #888;
+  color: #aaa;
   font-style: italic;
   font-size: 0.9rem;
 }
@@ -128,6 +194,7 @@
   border: 1px solid #333;
   background-color: #1a1a1a;
   color: #fff;
+  outline: none;
 }
 
 .chat-input-area button {
@@ -143,40 +210,4 @@
 .chat-input-area button:disabled {
   background-color: #444;
   cursor: not-allowed;
-}
-
-body {
-  /* Cargamos el Wallpaper desde la carpeta public */
-  background-image: url('/Nuzumy-Wallpaper.png');
-  
-  /* Hacemos que cubra toda la pantalla sin repetirse */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  
-  /* Mantenemos el fondo fijo para que el chat haga scroll sobre él */
-  background-attachment: fixed;
-  
-  /* Estilos base para la tipografía y el contenedor */
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-.header-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 0;
-}
-
-.nuzumy-logo {
-  max-width: 300px; /* Puedes subirlo o bajarlo según qué tan grande quieras que se vea */
-  height: auto;
-  object-fit: contain;
-  /* Una sombra suave para darle profundidad sobre el fondo */
-  filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.25));
 }

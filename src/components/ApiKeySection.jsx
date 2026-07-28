@@ -1,45 +1,65 @@
 import { useState } from 'react';
 
 export function ApiKeySection({ apiKey, setApiKey }) {
-  const [showKey, setShowKey] = useState(false);
+  const [provider, setProvider] = useState('gemini');
   const [showGuide, setShowGuide] = useState(false);
 
   return (
     <div className="api-key-container">
-      <div className="input-wrapper">
-        <input
-          type={showKey ? "text" : "password"}
-          className="api-key-input"
-          placeholder="Pega tu API Key de Gemini..."
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value.trim())}
-        />
-        <button 
-          type="button" 
-          className="toggle-visibility-btn"
-          onClick={() => setShowKey(!showKey)}
+      {/* Selector de modelo */}
+      <div className="provider-selector">
+        <label htmlFor="provider-select">Modelo:</label>
+        <select 
+          id="provider-select"
+          value={provider} 
+          onChange={(e) => setProvider(e.target.value)}
         >
-          {showKey ? "Ocultar" : "Ver"}
-        </button>
+          <option value="gemini">Google Gemini (Gratis con Key)</option>
+          <option value="custom">API Personalizada / Otra API</option>
+        </select>
       </div>
 
-      <p className="help-label">
-        ¿Sin saldo o sin Key?{' '}
-        <span 
-          className="guide-link" 
-          onClick={() => setShowGuide(!showGuide)}
-        >
-          Conseguí tu Key GRATIS de Gemini acá
-        </span>
-      </p>
+      {/* Input de la API Key */}
+      {provider === 'gemini' ? (
+        <div className="input-wrapper">
+          <input 
+            type="password" 
+            className="api-key-input"
+            placeholder="Pega tu API Key de Gemini..."
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+          />
+        </div>
+      ) : (
+        <div className="input-wrapper">
+          <input 
+            type="text" 
+            className="api-key-input"
+            placeholder="Endpoint de API personalizada..."
+          />
+        </div>
+      )}
 
-      {showGuide && (
+      {/* Botón/Enlace de ayuda */}
+      {provider === 'gemini' && (
+        <div className="help-label">
+          ¿No tienes una Key?{' '}
+          <span className="guide-link" onClick={() => setShowGuide(!showGuide)}>
+            Consigue tu Key GRATIS aquí
+          </span>
+        </div>
+      )}
+
+      {/* Guía explicativa */}
+      {showGuide && provider === 'gemini' && (
         <div className="guide-card">
-          <h4>Pasos para obtener tu Key:</h4>
+          <p style={{ margin: '0 0 6px 0', fontWeight: 'bold' }}>
+            Es 100% gratuita y sin datos de pago:
+          </p>
           <ol>
-            <li>Entrá a <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer">Google AI Studio</a>.</li>
-            <li>Iniciá sesión con tu cuenta de Google y seleccioná <strong>"Create API key"</strong>.</li>
-            <li>Copiá la clave que empieza con <code>AIzaSy...</code> y pégala arriba.</li>
+            <li>Entra a Google AI Studio con tu cuenta de Google.</li>
+            <li>Haz clic en <strong>"Create API Key"</strong>.</li>
+            <li>Copia el código y pégalo en el campo de arriba.</li>
           </ol>
         </div>
       )}
