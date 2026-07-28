@@ -67,7 +67,7 @@ function App() {
   // 3. Renderizado en pantalla
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>Nuzumy.ai Engine 🤖</h1>
+      <h1>Nuzumy.ai🐭</h1>
 
       {/* Caja para la API Key con ojito */}
       <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
