@@ -19,7 +19,7 @@ function App() {
 
     try {
       // Estructura segura: Separamos el dominio para evitar bloqueos del filtro
-      const endpointBase = 'https://deepseek.com'
+      const endpointBase = 'https://api.deepseek.com'
       const endpointRuta = '/v1/chat/completions'
       const urlFinal = endpointBase + endpointRuta
 
@@ -30,7 +30,7 @@ function App() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'deepseek-chat', // El modelo oficial rápido y económico
+          model: 'deepseek-v4-flash',
           messages: [
             // Personalidad del bot fija
             { role: 'system', content: 'Eres Nuzumy, un personaje de juego de rol místico y compañero leal. REGLA CRÍTICA: Tienes estrictamente prohibido narrar o decidir las acciones del usuario.' },
