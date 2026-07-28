@@ -2,23 +2,25 @@ import { useState } from 'react'
 
 function App() {
   // 1. Estados
+  const [mostrarKey, setMostrarKey] = useState(false)
   const [apiKey, setApiKey] = useState('') 
   const [mensaje, setMensaje] = useState('') 
+  const [cargando, setCargando] = useState(false)
   const [historial, setHistorial] = useState([
     { role: 'assistant', content: '¡Hola! Soy Nuzumy. ¿Qué aventura jugaremos hoy?' }
   ]) 
 
   // 2. La función que conecta con DeepSeek
   const enviarMensaje = async () => {
-    if (!mensaje.trim() || !apiKey.trim()) return alert('Por favor, ingresa tu API Key y un mensaje.')
+    if (!mensaje.trim() || !apiKey.trim() || cargando) return
 
     // Guardamos el mensaje del usuario en el historial
     const nuevoHistorial = [...historial, { role: 'user', content: mensaje }]
     setHistorial(nuevoHistorial)
     setMensaje('') 
+    setCargando(true)
 
     try {
-      // Estructura segura: Separamos el dominio para evitar bloqueos del filtro
       const endpointBase = 'https://api.deepseek.com'
       const endpointRuta = '/v1/chat/completions'
       const urlFinal = endpointBase + endpointRuta
@@ -26,14 +28,17 @@ function App() {
       const respuesta = await fetch(urlFinal, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${apiKey}`,
+          'Authorization': `Bearer ${apiKey.trim()}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [
             // Personalidad del bot fija
-            { role: 'system', content: 'Eres Nuzumy, un personaje de juego de rol místico y compañero leal. REGLA CRÍTICA: Tienes estrictamente prohibido narrar o decidir las acciones del usuario.' },
+            { 
+              role: 'system', 
+              content: 'Eres Nuzumy, un personaje de juego de rol místico y compañero leal. REGLA CRÍTICA: Tienes estrictamente prohibido narrar o decidir las acciones del usuario.' 
+            },
             ...nuevoHistorial 
           ]
         })
@@ -45,7 +50,7 @@ function App() {
 
       const datos = await respuesta.json()
       
-      // Lectura del formato estándar del Array choices usando el índice inicial 0
+      // Lectura del formato estándar del Array choices
       const textoBot = datos.choices[0].message.content
 
       // Sumamos la respuesta obtenida de la IA al chat
@@ -54,6 +59,8 @@ function App() {
     } catch (error) {
       console.error(error)
       alert('Hubo un error al conectar con Nuzumy. Revisa tu API Key o los créditos.')
+    } finally {
+      setCargando(false)
     }
   }
 
@@ -61,15 +68,24 @@ function App() {
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
       <h1>Nuzumy.ai Engine 🤖</h1>
-      
-      {/* Caja para la API Key */}
-      <input 
-        type="password" 
-        placeholder="Pega tu API Key de DeepSeek aquí" 
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
-        style={{ width: '100%', padding: '10px', marginBottom: '20px', boxSizing: 'border-box' }}
-      />
+
+      {/* Caja para la API Key con ojito */}
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+        <input 
+          type={mostrarKey ? 'text' : 'password'} 
+          placeholder="Pega tu API Key de DeepSeek aquí" 
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          style={{ flex: 1, padding: '10px', boxSizing: 'border-box' }}
+        />
+        <button 
+          type="button"
+          onClick={() => setMostrarKey(!mostrarKey)}
+          style={{ padding: '10px', cursor: 'pointer', background: '#e9e9eb', border: '1px solid #ccc', borderRadius: '4px' }}
+        >
+          {mostrarKey ? '👁️ Ocultar' : '👁️ Ver'}
+        </button>
+      </div>
 
       {/* Ventana de Chat */}
       <div style={{ border: '1px solid #ccc', height: '400px', overflowY: 'auto', padding: '10px', background: '#f9f9f9', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -81,6 +97,11 @@ function App() {
             </div>
           </div>
         ))}
+        {cargando && (
+          <div style={{ alignSelf: 'flex-start', color: '#666', fontSize: '0.9em' }}>
+            <em>Nuzumy está pensando...</em>
+          </div>
+        )}
       </div>
 
       {/* Input para escribir */}
@@ -92,9 +113,20 @@ function App() {
           onChange={(e) => setMensaje(e.target.value)}
           style={{ flex: 1, padding: '10px' }}
           onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()} 
+          disabled={cargando}
         />
-        <button onClick={enviarMensaje} style={{ padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>
-          Enviar
+        <button 
+          onClick={enviarMensaje} 
+          disabled={cargando || !mensaje.trim() || !apiKey.trim()}
+          style={{ 
+            padding: '10px 20px', 
+            background: cargando ? '#ccc' : '#007bff', 
+            color: '#fff', 
+            border: 'none', 
+            cursor: cargando ? 'not-allowed' : 'pointer' 
+          }}
+        >
+          {cargando ? '...' : 'Enviar'}
         </button>
       </div>
     </div>
